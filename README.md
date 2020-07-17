@@ -4,6 +4,8 @@ This action build iOS project. (.xcodeproj, .xcworkspace)
 
 And, can export to ipa, so it can be continuously delivered to DeployGate and TestFlight.
 
+(self-hosted is also supported)
+
 ## Inputs
 
 ### `project-path`
