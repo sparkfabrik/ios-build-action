@@ -42,6 +42,10 @@ inputs:
     description: "Output path of ipa"
     required: false
     default: "output.ipa"
+  append-github-sha:
+    description: "Append GITHUB_SHA to output filename"
+    required: false
+    default: false
   scheme:
     description: "Scheme"
     required: false

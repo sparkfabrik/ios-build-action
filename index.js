@@ -23,6 +23,10 @@ async function run() {
     process.env.CERTIFICATE_PASSWORD = core.getInput("certificate-password");
     process.env.OUTPUT_PATH = core.getInput("output-path");
     process.env.SCHEME = core.getInput("scheme");
+    if (core.getInput("append-github-sha")) {
+      const path = process.env.OUTPUT_PATH;
+      process.env.OUTPUT_PATH = `${path.slice(0, path.length - 4)}-${process.env.GITHUB_SHA}.ipa`;
+    }
 
     await exec.exec(`/bin/bash ${__dirname}/build.sh`);
   } catch (error) {
