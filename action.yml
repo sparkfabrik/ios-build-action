@@ -1,5 +1,5 @@
-name: "iOS Build Action"
-description: "Export ipa"
+name: "iOS Build Action (fork)"
+description: "Create an IPA file from ios source"
 inputs:
   project-path:
     description: "Project path"

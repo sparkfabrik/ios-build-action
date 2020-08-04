@@ -1,5 +1,7 @@
 # iOS Build Action
 
+Fork of: https://github.com/yukiarrr/ios-build-action
+
 This action build iOS project. (.xcodeproj, .xcworkspace)
 
 And, can export to ipa, so it can be continuously delivered to DeployGate and TestFlight.
@@ -50,17 +52,4 @@ Certificate password. Default `""`.
 
 Output path of ipa. Default `"output.ipa"`.
 
-## Example usage
 
-### Unity
-
-```yaml
-- uses: yukiarrr/ios-build-action@v0.5.1
-  with:
-    project-path: Unity-iPhone.xcodeproj
-    p12-base64: ${{ secrets.P12_BASE64 }}
-    mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
-    code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
-    team-id: ${{ secrets.TEAM_ID }}
-    workspace-path: Unity-iPhone.xcworkspace
-```
