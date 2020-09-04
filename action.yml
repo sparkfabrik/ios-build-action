@@ -1,4 +1,4 @@
-name: "iOS Build Action"
+name: "iOS Build Action (Spark Fork)"
 description: "Build iOS project (.xcodeproj, .xcworkspace), and export ipa"
 inputs:
   project-path:
