@@ -19,4 +19,8 @@ else
     echo $P12_BASE64 | base64 --decode > ios-build.p12
 fi
 echo $MOBILEPROVISION_BASE64 | base64 --decode > ios-build.mobileprovision
+
+if [[ $BROWSERSTACK_UPLOAD = true ]]; then
+    fastlane add_plugin browserstack
+fi
 fastlane export_ipa
