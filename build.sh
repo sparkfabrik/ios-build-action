@@ -2,7 +2,11 @@
 export CI=false
 
 if ! type fastlane > /dev/null 2>&1; then
-  sudo gem install fastlane -NV
+  if type brew > /dev/null 2>&1; then
+    brew install fastlane
+  else
+    sudo gem install fastlane -NV
+  fi
 fi
 
 script_path=$(cd $(dirname ${0}); pwd)
@@ -18,7 +22,6 @@ fi
 echo $MOBILEPROVISION_BASE64 | base64 --decode > ios-build.mobileprovision
 
 if [[ $BROWSERSTACK_UPLOAD = true ]]; then
-    CI=false yes | sudo bundle exec fastlane add_plugin browserstack
-    sudo bundle install
+    CI=false yes | fastlane add_plugin browserstack
 fi
 fastlane export_ipa
