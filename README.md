@@ -4,6 +4,8 @@ This action builds your iOS project (`.xcodeproj`, `.xcworkspace`) and exports t
 
 Tested with Ionic, React Native and native ios projects.
 
+Originally forked from `yukiarrr/ios-build-action`.
+
 ## Inputs
 
 You can add a single p12 key+cert file with `p12-base64`, or if you have key and cert in separate files
@@ -99,12 +101,12 @@ Remember to run `yarn install` and `yarn bundle` if you make changes to the `ind
 ```yaml
 - uses: sparkfabrik/ios-build-action@v1.0.0
   with:
-    project-path: Unity-iPhone.xcodeproj
+    project-path: App.xcodeproj
     p12-base64: ${{ secrets.P12_BASE64 }}
     mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
     code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
     team-id: ${{ secrets.TEAM_ID }}
-    workspace-path: Unity-iPhone.xcworkspace # optional
+    workspace-path: App.xcworkspace # optional
 ```
 
 ### key and cert
@@ -112,11 +114,11 @@ Remember to run `yarn install` and `yarn bundle` if you make changes to the `ind
 ```yaml
 - uses: sparkfabrik/ios-build-action@v1.0.0
   with:
-    project-path: Unity-iPhone.xcodeproj
+    project-path: App.xcodeproj
     p12-key-base64: ${{ secrets.P12_KEY_BASE64 }}
     p12-cer-base64: ${{ secrets.P12_CER_BASE64 }}
     mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
     code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
     team-id: ${{ secrets.TEAM_ID }}
-    workspace-path: Unity-iPhone.xcworkspace # optional
+    workspace-path: App.xcworkspace # optional
 ```
