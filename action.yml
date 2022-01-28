@@ -1,8 +1,8 @@
 name: "Build iOS Action"
 author: "SparkFabrik"
 branding:
-  icon: 'smartphone'
-  color: 'white'
+  icon: "smartphone"
+  color: "white"
 description: "Build iOS project (.xcodeproj, .xcworkspace), export .ipa, optional upload to BrowserStack App Live."
 inputs:
   project-path:
@@ -50,6 +50,10 @@ inputs:
     description: "Scheme"
     required: false
     default: ""
+  update-targets:
+    description: "Targets to be updated with mobileprovision, code signing identity, etc"
+    required: false
+    default: ""
   disable-targets:
     description: "Targets to disable automatic code signing. Input targets separated by ,. For example, 'MyApp,YourApp'."
     required: false
@@ -75,5 +79,5 @@ inputs:
     required: false
     default: ""
 runs:
-  using: "node12"
+  using: "node16"
   main: "dist/index.js"

@@ -4,6 +4,7 @@ platform :ios do
   desc "Export ipa"
   lane :export_ipa do
     keychain_password = SecureRandom.uuid
+
     create_keychain(
       name: "ios-build.keychain",
       password: keychain_password,
@@ -11,6 +12,7 @@ platform :ios do
       unlock: true,
       timeout: 3600
     )
+
     if ENV["CERTIFICATE_SPLIT"] == '1'
       import_certificate(
         certificate_path: "ios-build-key.p12",
@@ -35,48 +37,55 @@ platform :ios do
         log_output: true
       )
     end
+
     install_provisioning_profile(
       path: "ios-build.mobileprovision"
     )
-    disable_targets = ENV["DISABLE_TARGETS"]&.split(/,/)
+
+    update_targets = nil
+    if !ENV['UPDATE_TARGETS'].empty?
+      update_targets = ENV['UPDATE_TARGETS'].split(/\R/)
+    elsif !ENV['DISABLE_TARGETS'].empty?
+      update_targets = ENV['DISABLE_TARGETS'].split(/,/)
+    end
+
     update_code_signing_settings(
       use_automatic_signing: false,
       path: ENV["PROJECT_PATH"],
-      targets: disable_targets
+      code_sign_identity: ENV['CODE_SIGNING_IDENTITY'],
+      targets: update_targets
     )
+
     update_project_provisioning(
       xcodeproj: ENV["PROJECT_PATH"],
       profile: "ios-build.mobileprovision",
       code_signing_identity: ENV["CODE_SIGNING_IDENTITY"]
     )
+
     update_project_team(
       path: ENV["PROJECT_PATH"],
-      teamid: ENV["TEAM_ID"]
+      teamid: ENV["TEAM_ID"],
+      targets: update_targets
     )
+
     if ENV["BUILD_PODS"] == 'true'
       cocoapods(
         podfile: ENV["PODS_PATH"]
       )
     end
-    if ENV["WORKSPACE_PATH"] != ""
-      build_app(
-        workspace: ENV["WORKSPACE_PATH"],
-        configuration: ENV["CONFIGURATION"],
-        scheme: ENV["SCHEME"],
-        output_name: ENV["OUTPUT_PATH"],
-        clean: true,
-        export_method: ENV["EXPORT_METHOD"]
-      )
-    else
-      build_app(
-        project: ENV["PROJECT_PATH"],
-        configuration: ENV["CONFIGURATION"],
-        scheme: ENV["SCHEME"],
-        output_name: ENV["OUTPUT_PATH"],
-        clean: true,
-        export_method: ENV["EXPORT_METHOD"]
-      )
-    end
+
+    use_workspace = !ENV['WORKSPACE_PATH'].empty?
+    build_app(
+      workspace: use_workspace ? ENV['WORKSPACE_PATH'] : nil,
+      project: !use_workspace ? ENV['PROJECT_PATH'] : nil,
+      configuration: ENV['CONFIGURATION'],
+      scheme: ENV['SCHEME'],
+      output_directory: File.dirname(ENV['OUTPUT_PATH']),
+      output_name: File.basename(ENV['OUTPUT_PATH']),
+      clean: true,
+      export_method: ENV['EXPORT_METHOD'],
+    )
+
     if ENV["BROWSERSTACK_UPLOAD"] == 'true'
         upload_to_browserstack_app_live(
             browserstack_username: ENV["BROWSERSTACK_USERNAME"],
@@ -84,6 +93,7 @@ platform :ios do
             file_path: ENV["OUTPUT_PATH"]
         )
     end
+
     delete_keychain(
       name: "ios-build.keychain"
     )
