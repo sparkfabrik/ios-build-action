@@ -2974,6 +2974,7 @@ async function run() {
     process.env.CERTIFICATE_PASSWORD = core.getInput("certificate-password");
     process.env.OUTPUT_PATH = core.getInput("output-path");
     process.env.SCHEME = core.getInput("scheme");
+    process.env.UPDATE_TARGETS = core.getInput("update-targets");
     process.env.DISABLE_TARGETS = core.getInput("disable-targets");
     process.env.BROWSERSTACK_UPLOAD = core.getInput("browserstack-upload");
     process.env.BROWSERSTACK_USERNAME = core.getInput("browserstack-username");
