@@ -43,9 +43,9 @@ platform :ios do
     )
 
     update_targets = nil
-    if !ENV["UPDATE_TARGETS"].empty?
+    if !(ENV["UPDATE_TARGETS"].empty?)
       update_targets = ENV['UPDATE_TARGETS'].split(/\R/)
-    elsif !ENV['DISABLE_TARGETS'].empty?
+    elsif !(ENV['DISABLE_TARGETS'].empty?)
       update_targets = ENV['DISABLE_TARGETS'].split(/,/)
     end
 
