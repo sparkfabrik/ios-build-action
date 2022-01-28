@@ -4,12 +4,23 @@ const exec = require("@actions/exec");
 async function run() {
   try {
     // Validate p12 keys.
-    if (!core.getInput("p12-base64")
-      && (!core.getInput("p12-cer-base64") || !core.getInput("p12-key-base64"))) {
+    if (
+      !core.getInput("p12-base64") &&
+      (!core.getInput("p12-cer-base64") || !core.getInput("p12-key-base64"))
+    ) {
       throw new Error("P12 keys missing or in the wrong format.");
     }
-    if (core.getInput("browserstack-upload").toLowerCase() === 'true'
-      && (!core.getInput("browserstack-username") || !core.getInput("browserstack-access-key"))) {
+
+    // Validate mobileprovision
+    if (!core.getInput("mobileprovision-base64")) {
+      throw new Error("mobileprovision missing or in the wrong format.");
+    }
+
+    if (
+      core.getInput("browserstack-upload").toLowerCase() === "true" &&
+      (!core.getInput("browserstack-username") ||
+        !core.getInput("browserstack-access-key"))
+    ) {
       throw new Error("Browserstack username or access key missing.");
     }
     process.env.PROJECT_PATH = core.getInput("project-path");
@@ -30,7 +41,9 @@ async function run() {
     process.env.DISABLE_TARGETS = core.getInput("disable-targets");
     process.env.BROWSERSTACK_UPLOAD = core.getInput("browserstack-upload");
     process.env.BROWSERSTACK_USERNAME = core.getInput("browserstack-username");
-    process.env.BROWSERSTACK_ACCESS_KEY = core.getInput("browserstack-access-key");
+    process.env.BROWSERSTACK_ACCESS_KEY = core.getInput(
+      "browserstack-access-key"
+    );
     process.env.BUILD_PODS = core.getInput("build-pods");
     process.env.PODS_PATH = core.getInput("pods-path");
     await exec.exec(`bash ${__dirname}/../build.sh`);
