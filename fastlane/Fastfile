@@ -84,6 +84,7 @@ platform :ios do
       output_name: File.basename(ENV['OUTPUT_PATH']),
       clean: true,
       export_method: ENV['EXPORT_METHOD'],
+      export_team_id: ENV['TEAM_ID']
     )
 
     if ENV["BROWSERSTACK_UPLOAD"] == 'true'
