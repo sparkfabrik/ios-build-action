@@ -68,7 +68,7 @@ Output path of ipa. Default `"output.ipa"`.
 Targets to be updated with mobileprovision, code signing identity, etc. Split on new lines. Default `""`. (default to all targets)
 
 ```yaml
-- uses: sparkfabrik/ios-build-action@v1.1.0
+- uses: sparkfabrik/ios-build-action@v1.2.0
   with:
     update-targets: |
       MyApp
@@ -111,7 +111,7 @@ Remember to run `yarn install` and `yarn bundle` if you make changes to the `ind
 ### single p12
 
 ```yaml
-- uses: sparkfabrik/ios-build-action@v1.0.0
+- uses: sparkfabrik/ios-build-action@v1.2.0
   with:
     project-path: App.xcodeproj
     p12-base64: ${{ secrets.P12_BASE64 }}
@@ -124,7 +124,7 @@ Remember to run `yarn install` and `yarn bundle` if you make changes to the `ind
 ### key and cert
 
 ```yaml
-- uses: sparkfabrik/ios-build-action@v1.0.0
+- uses: sparkfabrik/ios-build-action@v1.2.0
   with:
     project-path: App.xcodeproj
     p12-key-base64: ${{ secrets.P12_KEY_BASE64 }}
