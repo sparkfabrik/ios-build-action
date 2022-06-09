@@ -1,9 +1,8 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Export ipa"
-  lane :export_ipa do
-    keychain_password = SecureRandom.uuid
+  before_all do
+    keychain_password = '12345678'
 
     create_keychain(
       name: "ios-build.keychain",
@@ -13,68 +12,37 @@ platform :ios do
       timeout: 3600
     )
 
-    if ENV["CERTIFICATE_SPLIT"] == '1'
-      import_certificate(
-        certificate_path: "ios-build-key.p12",
-        certificate_password: ENV["CERTIFICATE_PASSWORD"],
-        keychain_name: "ios-build.keychain",
-        keychain_password: keychain_password,
-        log_output: true
-      )
-      import_certificate(
-        certificate_path: "ios-build-key.cer",
-        certificate_password: ENV["CERTIFICATE_PASSWORD"],
-        keychain_name: "ios-build.keychain",
-        keychain_password: keychain_password,
-        log_output: true
-      )
-    else
-      import_certificate(
-        certificate_path: "ios-build.p12",
-        certificate_password: ENV["CERTIFICATE_PASSWORD"],
-        keychain_name: "ios-build.keychain",
-        keychain_password: keychain_password,
-        log_output: true
-      )
-    end
-
-    install_provisioning_profile(
-      path: "ios-build.mobileprovision"
-    )
-
-    update_targets = nil
-    if !ENV['UPDATE_TARGETS'].empty?
-      update_targets = ENV['UPDATE_TARGETS'].split(/\R/)
-    elsif !ENV['DISABLE_TARGETS'].empty?
-      update_targets = ENV['DISABLE_TARGETS'].split(/,/)
-    end
-
-    update_code_signing_settings(
-      use_automatic_signing: false,
-      path: ENV["PROJECT_PATH"],
-      code_sign_identity: ENV['CODE_SIGNING_IDENTITY'],
-      targets: update_targets
-    )
-
-    update_project_provisioning(
-      xcodeproj: ENV["PROJECT_PATH"],
-      profile: "ios-build.mobileprovision",
-      code_signing_identity: ENV["CODE_SIGNING_IDENTITY"]
-    )
-
-    update_project_team(
-      path: ENV["PROJECT_PATH"],
-      teamid: ENV["TEAM_ID"],
-      targets: update_targets
-    )
-
     if ENV["BUILD_PODS"] == 'true'
       cocoapods(
-        podfile: ENV["PODS_PATH"]
+        podfile: ENV["PODS_PATH"],
+        use_bundle_exec: false
+      )
+    end
+  end
+
+  desc "Build"
+  lane :build do
+    api_key = app_store_connect_api_key(
+      key_id: ENV['APPLE_KEY_ID'],
+      issuer_id: ENV['APPLE_KEY_ISSUER_ID'],
+      key_content: ENV['APPLE_KEY_CONTENT'],
+      in_house: false # optional but may be required if using match/sigh
+    )
+
+    use_workspace = !ENV['WORKSPACE_PATH'].empty?
+    match(type: ENV['MATCH_BUILD_TYPE'], api_key: api_key)
+
+    if ENV['INCREMENT_BUILD_NUMBER'] == 'true'
+      increment_build_number(
+        xcodeproj: ENV['PROJECT_PATH'],
+        build_number: (latest_testflight_build_number(
+          app_identifier: ENV["IOS_APP_ID"],
+          api_key: api_key,
+          team_name: ENV["TEAM_NAME"],
+        ) + 1).to_s,
       )
     end
 
-    use_workspace = !ENV['WORKSPACE_PATH'].empty?
     build_app(
       workspace: use_workspace ? ENV['WORKSPACE_PATH'] : nil,
       project: !use_workspace ? ENV['PROJECT_PATH'] : nil,
@@ -84,17 +52,32 @@ platform :ios do
       output_name: File.basename(ENV['OUTPUT_PATH']),
       clean: true,
       export_method: ENV['EXPORT_METHOD'],
-      export_team_id: ENV['TEAM_ID']
+      export_team_id: ENV['TEAM_ID'],
+      silent: true,
+      include_bitcode: true,
     )
 
     if ENV["BROWSERSTACK_UPLOAD"] == 'true'
-        upload_to_browserstack_app_live(
-            browserstack_username: ENV["BROWSERSTACK_USERNAME"],
-            browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
-            file_path: ENV["OUTPUT_PATH"]
-        )
+      upload_to_browserstack_app_live(
+        browserstack_username: ENV["BROWSERSTACK_USERNAME"],
+        browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
+        file_path: ENV["OUTPUT_PATH"]
+      )
     end
 
+    if ENV["TESTFLIGHT_UPLOAD"] == 'true'
+      upload_to_testflight(
+        ipa: File.join(File.dirname(ENV['OUTPUT_PATH']), File.basename(ENV['OUTPUT_PATH'])),
+        api_key: api_key,
+        app_identifier: ENV['IOS_APP_ID'],
+        team_name: ENV['TEAM_NAME'],
+        skip_waiting_for_build_processing: true,
+        skip_submission: true,
+      )
+    end
+  end
+
+  after_all do
     delete_keychain(
       name: "ios-build.keychain"
     )
