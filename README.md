@@ -1,43 +1,19 @@
 # Build iOS App
 
-This action builds your iOS project (`.xcodeproj`, `.xcworkspace`) and exports the resulting `.ipa` file as GitHub artifact, with optional automatic upload to BrowserStack AppLive.
+This action builds your iOS project (`.xcodeproj`, `.xcworkspace`) and can export the resulting `.ipa` file as GitHub artifact, with optional automatic upload to BrowserStack AppLive, and optional signed production build with App Store upload.
 
 Tested with Ionic, React Native and native ios projects.
 
-Originally forked from `yukiarrr/ios-build-action`.
+## WARNING v2 has breaking changes and it will break your non-pinned Actions!
+
+To keep the old behavior please use the `v1` version.
+`v2` uses `Match` to simplify and strenghten the certificates management, and can optionally upload the build to the App Store.
 
 ## Inputs
-
-You can add a single p12 key+cert file with `p12-base64`, or if you have key and cert in separate files
-you can add them with `p12-key-base64` and `p12-cer-base64`. One of the two options is required.
 
 ### `project-path`
 
 **Required** .xcodeproj path.
-
-### `p12-base64`
-
-**Required if single file**: Base64 encoded p12 file (key + cert).
-
-### `p12-key-base64`
-
-**Required if split key/cert**: Base64 encoded p12 key file.
-
-### `p12-cer-base64`
-
-**Required if split key/cert**: Base64 encoded certificate for the p12 key.
-
-### `mobileprovision-base64`
-
-**Required** Base64 encoded mobileprovision file.
-
-### `code-signing-identity`
-
-**Required** For example, `"iOS Distribution"`.
-
-### `team-id`
-
-**Required** Team id.
 
 ### `workspace-path`
 
@@ -53,39 +29,65 @@ For example, `"Debug"`, `"Release"`. Default `"Release"`.
 
 ### `scheme`
 
-For example, `"myscheme"`.
-
-### `certificate-password`
-
-Certificate password. Default `""`.
+For example, `MyScheme`.
 
 ### `output-path`
 
 Output path of ipa. Default `"output.ipa"`.
 
-### `update-targets`
+### `team-id`
 
-Targets to be updated with mobileprovision, code signing identity, etc. Split on new lines. Default `""`. (default to all targets)
+**Required** Team id.
 
-```yaml
-- uses: sparkfabrik/ios-build-action@v1.2.0
-  with:
-    update-targets: |
-      MyApp
-      YourApp
-```
+### `team-name`
 
-### `disable-targets`
-
-These targets will not use automatic code signing and instead use the identity specified in other inputs. Input targets separated by ','. For example, 'MyApp,YourApp'. Default "". (default to all targets)
+**Required** Team name.
 
 ### `build-pods`
 
-Run the `pod install` command during the build.
+Run the `pod install` command during the build (boolean)
 
 ### `pods-path`
 
 The path to the Podfile. Default `"Podfile"`
+
+### `upload-to-testflight`
+
+Upload the build to the App Store (boolean)
+
+### `increment-build-number`
+
+Automatically increment the latest build number from TestFlight by one (boolean)
+
+### `apple-key-id`
+
+The Apple Key ID
+
+### `apple-key-issuer-id`
+
+The Apple Key Issuer ID
+
+### `apple-key-content`
+
+The Apple Key content
+
+### `match-git-url`
+
+The GitHub repo URL for storing Match certificates.
+See https://docs.fastlane.tools/actions/match/
+
+### `match-git-basic-authorization`
+
+base64 key to the repo.
+Generate it with `echo -n your_github_username:your_personal_access_token | base64`
+
+### `match-password`
+
+The password to decrypt the certificates.
+
+### `match-build-type`
+
+The Match build type (eg. "development")
 
 ### `browserstack-upload`
 
@@ -106,31 +108,31 @@ Browserstack access key (**required if** browserstack-upload == true)
 If you have any other inputs you'd like to add, feel free to create PR.
 Remember to run `yarn install` and `yarn bundle` if you make changes to the `index.js`.
 
-## Example usage
-
-### single p12
+## Example usage with a production build uploaded to App Store
 
 ```yaml
-- uses: sparkfabrik/ios-build-action@v1.2.0
+- uses: sparkfabrik/ios-build-action@v2
   with:
-    project-path: App.xcodeproj
-    p12-base64: ${{ secrets.P12_BASE64 }}
-    mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
-    code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
+    upload-to-testflight: true
+    increment-build-number: true
+    build-pods: true
+    pods-path: 'ios/Podfile'
+    configuration: Release
+    export-method: app-store
+    workspace-path: ${{ secrets.WORKSPACE_PATH }}
+    project-path: ${{ secrets.PROJECT_PATH }}
+    scheme: MyScheme
+    output-path: build-${{ github.sha }}.ipa
+    apple-key-id: ${{ secrets.APPLE_KEY_ID }}
+    apple-key-issuer-id: ${{ secrets.APPLE_KEY_ISSUER_ID }}
+    apple-key-content: ${{ secrets.APPLE_KEY_CONTENT }}
     team-id: ${{ secrets.TEAM_ID }}
-    workspace-path: App.xcworkspace # optional
-```
-
-### key and cert
-
-```yaml
-- uses: sparkfabrik/ios-build-action@v1.2.0
-  with:
-    project-path: App.xcodeproj
-    p12-key-base64: ${{ secrets.P12_KEY_BASE64 }}
-    p12-cer-base64: ${{ secrets.P12_CER_BASE64 }}
-    mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
-    code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
-    team-id: ${{ secrets.TEAM_ID }}
-    workspace-path: App.xcworkspace # optional
+    team-name: ${{ secrets.TEAM_NAME }}
+    match-password: ${{ secrets.MATCH_PASSWORD }}
+    match-git-url: ${{ secrets.MATCH_GIT_URL }}
+    match-git-basic-authorization: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+    match-build-type: 'appstore'
+    browserstack-upload: true
+    browserstack-username: ${{ secrets.BROWSERSTACK_USERNAME }}
+    browserstack-access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
 ```

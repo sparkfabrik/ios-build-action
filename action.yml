@@ -5,26 +5,31 @@ branding:
   color: "white"
 description: "Build iOS project (.xcodeproj, .xcworkspace), export .ipa, optional upload to BrowserStack App Live."
 inputs:
+  upload-to-testflight:
+    description: "Upload to TestFlight."
+    required: false
+    default: false
+  increment-build-number:
+    description: "Increment build number."
+    required: false
+    default: false
   project-path:
     description: "Project path"
     required: true
-  p12-key-base64:
-    description: "Base64 encoded p12 key"
-    required: false
-  p12-cer-base64:
-    description: "Base64 encoded certificate for the p12 key"
-    required: false
-  p12-base64:
-    description: "Base64 encoded p12 file (key + cert)"
-    required: false
-  mobileprovision-base64:
-    description: "Base64 encoded mobileprovision file"
-    required: true
-  code-signing-identity:
-    description: "For example, iOS Distribution"
-    required: true
   team-id:
     description: "Team id"
+    required: true
+  team-name:
+    description: "Team name"
+    required: true
+  apple-key-id:
+    description: "Apple key id"
+    required: true
+  apple-key-issuer-id:
+    description: "Apple key issuer id"
+    required: true
+  apple-key-content:
+    description: "Apple key content"
     required: true
   workspace-path:
     description: "Workspace path"
@@ -38,10 +43,6 @@ inputs:
     description: "For example, Debug, Release"
     required: false
     default: "Release"
-  certificate-password:
-    description: "Certificate password"
-    required: false
-    default: ""
   output-path:
     description: "Output path of ipa"
     required: false
@@ -54,10 +55,6 @@ inputs:
     description: "Targets to be updated with mobileprovision, code signing identity, etc"
     required: false
     default: ""
-  disable-targets:
-    description: "Targets to disable automatic code signing. Input targets separated by ,. For example, 'MyApp,YourApp'."
-    required: false
-    default: ""
   build-pods:
     description: "Boolean to tell if `pod install` should be run during build."
     required: false
@@ -66,6 +63,22 @@ inputs:
     description: "The path to the Podfile."
     required: false
     default: "Podfile"
+  match-password:
+    description: "The password to decrypt certificates."
+    required: true
+    default: false
+  match-git-url:
+    description: "The git url where match can find the certificates."
+    required: true
+    default: false
+  match-git-basic-authorization:
+    description: "The basic authorization to access the repository."
+    required: true
+    default: false
+  match-build-type:
+    description: "The build type to use when building the app."
+    required: true
+    default: false
   browserstack-upload:
     description: "Boolean to tell the Action to upload the .ipa to Browserstack App Live after the build."
     required: false
