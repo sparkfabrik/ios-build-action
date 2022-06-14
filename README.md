@@ -4,10 +4,11 @@ This action builds your iOS project (`.xcodeproj`, `.xcworkspace`) and can expor
 
 Tested with Ionic, React Native and native ios projects.
 
-## WARNING v2 has breaking changes and it will break your non-pinned Actions!
+## WARNING v2 has breaking changes and it will break your Actions!
 
 To keep the old behavior please use the `v1` version.
-`v2` uses `Match` to simplify and strenghten the certificates management, and can optionally upload the build to the App Store.
+
+`v2` uses Match to simplify and strengthen the certificates management, and can optionally upload the build to the App Store.
 
 ## Inputs
 
