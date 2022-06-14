@@ -8,7 +8,7 @@ Tested with Ionic, React Native and native ios projects.
 
 To keep the old behavior please use the `v1` version.
 
-`v2` uses Match to simplify and strengthen the certificates management, and can optionally upload the build to the App Store.
+`v2.0.0` uses Match to simplify and strengthen the certificates management, and can optionally upload the build to the App Store.
 
 ## Inputs
 
@@ -112,7 +112,7 @@ Remember to run `yarn install` and `yarn bundle` if you make changes to the `ind
 ## Example usage with a production build uploaded to App Store
 
 ```yaml
-- uses: sparkfabrik/ios-build-action@v2
+- uses: sparkfabrik/ios-build-action@v2.0.0
   with:
     upload-to-testflight: true
     increment-build-number: true
