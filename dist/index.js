@@ -3364,6 +3364,7 @@ async function run() {
     process.env.APPLE_KEY_ID = core.getInput("apple-key-id");
     process.env.APPLE_KEY_ISSUER_ID = core.getInput("apple-key-issuer-id");
     process.env.APPLE_KEY_CONTENT = core.getInput("apple-key-content");
+    process.env.FASTLANE_ENV = core.getInput("fastlane-env");
     await exec.exec(`bash ${__dirname}/../build.sh`);
   } catch (error) {
     core.setFailed(error.message);
