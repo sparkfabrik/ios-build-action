@@ -16,4 +16,11 @@ if [[ $BROWSERSTACK_UPLOAD = true || $BUILD_PODS = true ]]; then
     bundle install
 fi
 
-fastlane build
+# If the variable FASTLANE_ENV is set then run fastlane with the --env equal to the variable.
+if [ -n "${FASTLANE_ENV}" ]; then
+    echo "Running fastlane with environment: ${FASTLANE_ENV}"
+    fastlane --env ${FASTLANE_ENV} build
+else
+    echo "Running fastlane"
+    fastlane build
+fi

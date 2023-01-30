@@ -66,19 +66,15 @@ inputs:
   match-password:
     description: "The password to decrypt certificates."
     required: true
-    default: false
   match-git-url:
     description: "The git url where match can find the certificates."
     required: true
-    default: false
   match-git-basic-authorization:
     description: "The basic authorization to access the repository."
     required: true
-    default: false
   match-build-type:
     description: "The build type to use when building the app."
     required: true
-    default: false
   browserstack-upload:
     description: "Boolean to tell the Action to upload the .ipa to Browserstack App Live after the build."
     required: false
@@ -91,6 +87,13 @@ inputs:
     description: "Browserstack access key (required if browserstack-upload == true)"
     required: false
     default: ""
+  fastlane-env:
+    description: "Name of the env file name to pass to fastlane --env"
+    required: false
+    default: ""
+  ios-app-id:
+    description: "The iOS application identifier; useful to sync a specific provisioning profile"
+    required: false
 runs:
   using: "node16"
   main: "dist/index.js"
