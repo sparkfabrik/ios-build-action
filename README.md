@@ -104,10 +104,19 @@ Browserstack username (**required if** browserstack-upload == true)
 
 Browserstack access key (**required if** browserstack-upload == true)
 
+### `fastlane-env`
+
+Name of the env file name to pass to `fastlane --env`
+
+### `ios-app-id`
+
+The iOS application identifier; useful to sync a specific provisioning profile
+
 ## Contributions Welcome!
 
 If you have any other inputs you'd like to add, feel free to create PR.
-Remember to run `yarn install` and `yarn bundle` if you make changes to the `index.js`.
+
+**NOTE:** Remember to run `yarn install` and `yarn bundle` if you make changes to the `index.js`.
 
 ## Example usage with a production build uploaded to App Store
 
@@ -117,7 +126,7 @@ Remember to run `yarn install` and `yarn bundle` if you make changes to the `ind
     upload-to-testflight: true
     increment-build-number: true
     build-pods: true
-    pods-path: 'ios/Podfile'
+    pods-path: "ios/Podfile"
     configuration: Release
     export-method: app-store
     workspace-path: ${{ secrets.WORKSPACE_PATH }}
@@ -127,12 +136,13 @@ Remember to run `yarn install` and `yarn bundle` if you make changes to the `ind
     apple-key-id: ${{ secrets.APPLE_KEY_ID }}
     apple-key-issuer-id: ${{ secrets.APPLE_KEY_ISSUER_ID }}
     apple-key-content: ${{ secrets.APPLE_KEY_CONTENT }}
+    ios-app-id: com.identifier.my_app
     team-id: ${{ secrets.TEAM_ID }}
     team-name: ${{ secrets.TEAM_NAME }}
     match-password: ${{ secrets.MATCH_PASSWORD }}
     match-git-url: ${{ secrets.MATCH_GIT_URL }}
     match-git-basic-authorization: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
-    match-build-type: 'appstore'
+    match-build-type: "appstore"
     browserstack-upload: true
     browserstack-username: ${{ secrets.BROWSERSTACK_USERNAME }}
     browserstack-access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
