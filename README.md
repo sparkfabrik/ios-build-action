@@ -121,7 +121,7 @@ If you have any other inputs you'd like to add, feel free to create PR.
 ## Example usage with a production build uploaded to App Store
 
 ```yaml
-- uses: sparkfabrik/ios-build-action@v2.0.0
+- uses: sparkfabrik/ios-build-action@v2.1.0
   with:
     upload-to-testflight: true
     increment-build-number: true
@@ -136,7 +136,6 @@ If you have any other inputs you'd like to add, feel free to create PR.
     apple-key-id: ${{ secrets.APPLE_KEY_ID }}
     apple-key-issuer-id: ${{ secrets.APPLE_KEY_ISSUER_ID }}
     apple-key-content: ${{ secrets.APPLE_KEY_CONTENT }}
-    ios-app-id: com.identifier.my_app
     team-id: ${{ secrets.TEAM_ID }}
     team-name: ${{ secrets.TEAM_NAME }}
     match-password: ${{ secrets.MATCH_PASSWORD }}
@@ -146,4 +145,6 @@ If you have any other inputs you'd like to add, feel free to create PR.
     browserstack-upload: true
     browserstack-username: ${{ secrets.BROWSERSTACK_USERNAME }}
     browserstack-access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+    fastlane-env: stage
+    ios-app-id: com.identifier.my_app
 ```
