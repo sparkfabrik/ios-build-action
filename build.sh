@@ -1,20 +1,16 @@
 #!/bin/bash -e
 
-if ! type fastlane > /dev/null 2>&1; then
-  if type brew > /dev/null 2>&1; then
-    brew install fastlane
-  else
-    sudo gem install fastlane -NV
-  fi
-fi
-
 script_path=$(cd $(dirname ${0}); pwd)
 cp -r ${script_path}/fastlane ./
-cp -r ${script_path}/Gemfile ./
+cp ${script_path}/Gemfile ./
+
+bundle add fastlane --version ${FASTLANE_VERSION}
 
 if [[ $BROWSERSTACK_UPLOAD = true || $BUILD_PODS = true ]]; then
-    bundle install
+  bundle add cocoapods
 fi
+
+bundle install
 
 # If the variable FASTLANE_ENV is set then run fastlane with the --env equal to the variable.
 if [ -n "${FASTLANE_ENV}" ]; then

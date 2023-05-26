@@ -87,6 +87,10 @@ inputs:
     description: "Browserstack access key (required if browserstack-upload == true)"
     required: false
     default: ""
+  fastlane-version:
+    description: "Specify the Fastlane version you wish to use"
+    default: "2.213.0"
+    required: false
   fastlane-env:
     description: "Name of the env file name to pass to fastlane --env"
     required: false
