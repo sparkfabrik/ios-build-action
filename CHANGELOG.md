@@ -1,6 +1,22 @@
 # Change Log
 
-## [2.1.0] - 2023-01-30
+## [2.3.0] - 2023-26-05
+
+### Added
+
+`fastlane-version` input.
+
+### Changed
+
+Fastlane is always installed via `bundler`.
+
+## [2.2.0] - 2023-21-02
+
+### Changed
+
+Remove `include_bitcode` parameter (now deprecated).
+
+## [2.1.0] - 2023-30-01
 
 ### Added
 

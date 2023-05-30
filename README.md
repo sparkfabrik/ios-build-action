@@ -104,6 +104,10 @@ Browserstack username (**required if** browserstack-upload == true)
 
 Browserstack access key (**required if** browserstack-upload == true)
 
+### `fastlane-version`
+
+Fastlane version to be used. If not specified, the default value will be used.
+
 ### `fastlane-env`
 
 Name of the env file name to pass to `fastlane --env`
@@ -121,7 +125,7 @@ If you have any other inputs you'd like to add, feel free to create PR.
 ## Example usage with a production build uploaded to App Store
 
 ```yaml
-- uses: sparkfabrik/ios-build-action@v2.1.0
+- uses: sparkfabrik/ios-build-action@v2.3.0
   with:
     upload-to-testflight: true
     increment-build-number: true

@@ -31,6 +31,7 @@ async function run() {
     process.env.APPLE_KEY_ID = core.getInput("apple-key-id");
     process.env.APPLE_KEY_ISSUER_ID = core.getInput("apple-key-issuer-id");
     process.env.APPLE_KEY_CONTENT = core.getInput("apple-key-content");
+    process.env.FASTLANE_VERSION = core.getInput("fastlane-version");
     process.env.FASTLANE_ENV = core.getInput("fastlane-env");
     process.env.IOS_APP_ID = core.getInput("ios-app-id");
     await exec.exec(`bash ${__dirname}/../build.sh`);
