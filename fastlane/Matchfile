@@ -4,7 +4,7 @@ storage_mode("git")
 
 type(ENV["MATCH_BUILD_TYPE"]) # The default type, can be: appstore, adhoc, enterprise or development
 
-app_identifier(ENV["APP_ID"])
+app_identifier(ENV["IOS_APP_ID"])
 
 keychain_name('ios-build.keychain')
 keychain_password('12345678')
