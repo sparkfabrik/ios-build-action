@@ -62,15 +62,15 @@ Automatically increment the latest build number from TestFlight by one (boolean)
 
 ### `apple-key-id`
 
-The Apple Key ID
+The Apple Key ID. See https://docs.fastlane.tools/app-store-connect-api/ and https://docs.fastlane.tools/actions/app_store_connect_api_key/ for more examples.
 
 ### `apple-key-issuer-id`
 
-The Apple Key Issuer ID
+The Apple Key Issuer ID. See https://docs.fastlane.tools/app-store-connect-api/ and https://docs.fastlane.tools/actions/app_store_connect_api_key/ for more examples.
 
 ### `apple-key-content`
 
-The Apple Key content
+The Apple Key content. See https://docs.fastlane.tools/app-store-connect-api/ and https://docs.fastlane.tools/actions/app_store_connect_api_key/ for more examples.
 
 ### `match-git-url`
 
