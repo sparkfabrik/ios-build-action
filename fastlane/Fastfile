@@ -54,7 +54,7 @@ platform :ios do
       export_method: ENV['EXPORT_METHOD'],
       export_team_id: ENV['TEAM_ID'],
       silent: true,
-      xcargs: "-skipPackagePluginValidation -skipMacroValidation",
+      xcargs: ENV['BUILD_XCARGS'],
       export_options: ENV['IOS_APP_ID'] != nil ? {
         provisioningProfiles: {
           "#{ENV['IOS_APP_ID']}" => "match AppStore #{ENV['IOS_APP_ID']}",
