@@ -58,6 +58,7 @@ inputs:
   build-xcargs:
     description: "Pass additional arguments to xcodebuild for the build phase."
     required: false
+    default: ""
   build-pods:
     description: "Boolean to tell if `pod install` should be run during build."
     required: false
