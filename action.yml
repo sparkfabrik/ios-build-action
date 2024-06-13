@@ -55,6 +55,10 @@ inputs:
     description: "Targets to be updated with mobileprovision, code signing identity, etc"
     required: false
     default: ""
+  build-xcargs:
+    description: "Pass additional arguments to xcodebuild for the build phase."
+    required: false
+    default: ""
   build-pods:
     description: "Boolean to tell if `pod install` should be run during build."
     required: false
