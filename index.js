@@ -22,6 +22,7 @@ async function run() {
     process.env.BROWSERSTACK_UPLOAD = core.getInput("browserstack-upload");
     process.env.BROWSERSTACK_USERNAME = core.getInput("browserstack-username");
     process.env.BROWSERSTACK_ACCESS_KEY = core.getInput("browserstack-access-key");
+    process.env.BUILD_XCARGS = core.getInput("build-xcargs");
     process.env.BUILD_PODS = core.getInput("build-pods");
     process.env.PODS_PATH = core.getInput("pods-path");
     process.env.MATCH_PASSWORD = core.getInput("match-password");

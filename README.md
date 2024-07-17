@@ -44,6 +44,10 @@ Output path of ipa. Default `"output.ipa"`.
 
 **Required** Team name.
 
+### `build-xcargs`
+
+Pass additional arguments to xcodebuild for the build phase. Be sure to quote the setting names and values e.g.` OTHER_LDFLAGS="-ObjC -lstdc++"`, `"-skipPackagePluginValidation -skipMacroValidation"`
+
 ### `build-pods`
 
 Run the `pod install` command during the build (boolean)
@@ -129,6 +133,7 @@ If you have any other inputs you'd like to add, feel free to create PR.
   with:
     upload-to-testflight: true
     increment-build-number: true
+    build-xcargs: "-skipPackagePluginValidation -skipMacroValidation"
     build-pods: true
     pods-path: "ios/Podfile"
     configuration: Release
